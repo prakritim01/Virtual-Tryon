@@ -1,47 +1,34 @@
-Virtual Try ON : AR Virtual Try-On
-Virtual Try ON  is an Augmented Reality (AR) application built with Python that allows users to virtually try on clothing in real-time. By leveraging computer vision and pose estimation, the app dynamically overlays 2D clothing assets onto a live webcam feed, adjusting for the user's posture, size, and movement.
+# 🪞 MaisonMuse: AR Virtual Try-On Studio
 
-🚀 The Challenge
-Online shoppers often face uncertainty because they cannot try on clothes before purchasing, which leads to high return rates for businesses. MaisonMuse addresses this by providing an interactive way to visualize fit and style from home.
+An interactive Augmented Reality (AR) application built with Python and Computer Vision that allows users to virtually try on clothing in real-time. By leveraging MediaPipe pose estimation and dynamic matrix math, the engine overlays 2D clothing assets onto a live webcam feed, adjusting perfectly for posture, scale, and movement.
 
-🛠️ Core Technologies
-OpenCV: Used for capturing live video feed, processing frames, and rendering the final output.
+##  The Challenge
+Online shoppers often face uncertainty because they cannot physically test clothing before purchasing, leading to high return rates and poor user experience. **MaisonMuse** solves this by providing a high-fidelity, interactive environment to visualize fit and style directly from home.
 
-MediaPipe: Google’s framework used to track 33 body landmarks in real-time.
+##  Core Engineering & Architecture
+* **Landmark Detection:** Utilizes Google’s **MediaPipe** framework to track 33 sub-millimeter body landmarks in real-time, focusing specifically on the shoulder (11, 12) and hip (23, 24) axes.
+* **Dynamic Scaling & Rotation:** The core engine calculates Euclidean distances between anchor points to dynamically scale garment width and height. It continuously computes the shoulder angle using `math.atan2` to ensure the fabric tilts naturally with the user.
+* **Jitter Reduction:** High-precision sensor data often causes visual stuttering. MaisonMuse implements a mathematical smoothing buffer (using `collections.deque`) that averages positional matrix calculations over the last 8 frames, resulting in a locked, stable overlay.
+* **Image Processing:** Uses **OpenCV** for live video capture/rendering and **Pillow (PIL)** for advanced RGBA alpha-blending and Lanczos resampling of the clothing PNGs. Includes an automated asset pipeline (`process_assets.py`) for stripping background pixels.
 
-Pillow (PIL): Used for advanced image manipulation, including the rotation and resizing of clothing PNGs.
+##  Tech Stack
+* **Language:** Python 3.10+
+* **Computer Vision:** OpenCV, MediaPipe
+* **Matrix/Math:** NumPy
+* **Interface:** Tkinter (Custom Desktop Architecture)
 
-NumPy: Handles numerical calculations for coordinate geometry and the smoothing algorithm.
+##  How to Run Locally
 
-📐 How It Works
-Landmark Detection: The system tracks four key body landmarks: Left/Right Shoulders (11, 12) and Left/Right Hips (23, 24).
+**1. Clone the repository**
+```bash
+git clone [https://github.com/prakritim01/virtual-tryon.git](https://github.com/prakritim01/virtual-tryon.git)
+cd virtual-tryon
+2. Install Dependencies
+pip install -r requirements.txt
+3. Launch the Application
+You can run the full desktop GUI or the lightweight AR engine directly:
+# To launch the full MaisonMuse Desktop GUI:
+python main.py
 
-Core Calculations:
-
-Anchor Point: The center of the shoulders serves as the "hang" point for the garment.
-
-Scaling: The width and height are calculated based on the distance between shoulder landmarks and torso height.
-
-Rotation: The software calculates the shoulder angle to ensure the shirt tilts with the user.
-
-Jitter Reduction: To solve "jitter" caused by high-precision sensor data, the app uses a smoothing buffer that averages calculations over the last 8 frames for a stable overlay.
-
-🎮 Controls & Real-Time Tuning
-The application features a unique real-time tuning system to allow users to find their perfect personalized fit.
-
-[n]: Switch to the next outfit.
-
-[w / s]: Adjust the vertical (Y-axis) position of the garment.
-
-[a / d]: Adjust the width multiplier.
-
-[+ / -]: Increase or decrease the overall scale.
-
-[q]: Quit the application.
-
-🔮 Future Roadmap
-Generative AI: Integrating models like VITON to generate realistic fabric folds and lighting.
-
-3D Assets: Moving from 2D PNGs to 3D models for better depth perception.
-
-Gesture Controls: Using hand tracking to switch outfits with a wave.
+# To launch the lightweight OpenCV HUD version:
+python ar_tryon_live.py
