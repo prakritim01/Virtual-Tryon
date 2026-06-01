@@ -23,3 +23,12 @@ Online shoppers often face uncertainty because they cannot physically test cloth
 ```bash
 git clone [https://github.com/prakritim01/virtual-tryon.git](https://github.com/prakritim01/virtual-tryon.git)
 cd virtual-tryon
+2. Install Dependencies
+pip install -r requirements.txt
+3. Launch the Application
+You can run the full desktop GUI or the lightweight AR engine directly:
+# To launch the full MaisonMuse Desktop GUI:
+python main.py
+
+# To launch the lightweight OpenCV HUD version:
+python ar_tryon_live.py
